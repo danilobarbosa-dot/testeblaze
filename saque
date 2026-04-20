@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Blaze – Suporte Unificado</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .box {
+      width: 480px;
+      border: 2px solid #e10600;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      text-align: center;
+      overflow-y: auto;
+      max-height: 95vh;
+    }
+
+    h2 {
+      color: #e10600;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: #333;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    ul {
+      text-align: left;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    a {
+      color: #e10600;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 6px;
+      background: #e10600;
+      color: #fff;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #b00500;
+    }
+
+    .secondary {
+      background: #555;
+    }
+
+    .secondary:hover {
+      background: #333;
+    }
+
+    .link-list {
+      text-align: left;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #eee;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+    }
+
+    .link-item {
+      display: block;
+      padding: 8px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      color: #e10600;
+      text-decoration: none;
+    }
+
+    .link-item:hover {
+      background: #fff5f5;
+    }
+
+    pre {
+      background: #f7f7f7;
+      padding: 15px;
+      white-space: pre-wrap;
+      text-align: left;
+      font-size: 13px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+    }
+
+    .logo-area {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .logo-area img {
+      width: 90px;
+      opacity: 0.9;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      font-size: 13px;
+      font-weight: bold;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box" id="app"></div>
+
+<script>
+const app = document.getElementById("app");
+
+function tela(conteudo) {
+  app.innerHTML = conteudo;
+}
+
+/* ===================== MENU PRINCIPAL ===================== */
+function menu() {
+  tela(`
+    <h2>Fluxos de Atendimento</h2>
+    <p>Selecione o tipo de atendimento:</p>
+
+    <button onclick="inicioCashback()">🧮 Cálculo Individual Cashback</button>
+    <button onclick="linksUteis()">🌐 Links úteis - Blog</button>
+    
+    <div class="logo-area">
+      <img src="https://logodownload.org/wp-content/uploads/2022/08/blaze-logo-0.png">
+    </div>
+  `);
+}
+
+/* ===================== BLOG ===================== */
+function linksUteis() {
+  const links = [
+    { n: "Lei dos Grandes Números", l: "https://blaze.bet.br/pt/blog/article/lei-dos-grandes-numeros-nas-apostas" },
+    { n: "RNG (Gerador de Números Aleatórios)", l: "https://blaze.bet.br/pt/blog/article/rng" },
+    { n: "Vício em Apostas", l: "https://blaze.bet.br/pt/blog/article/vicio-em-apostas" },
+    { n: "Golpes e Fraudes em Cassinos", l: "https://blaze.bet.br/pt/blog/article/golpes-e-fraudes-nos-cassinos-online" },
+    { n: "Guia de Análise de Riscos", l: "https://blaze.bet.br/pt/blog/article/guia-de-analise-de-riscos-nas-apostas-online" },
+    { n: "xG (Expected Goals)", l: "https://blaze.bet.br/pt/blog/article/xg-expected-goals" },
+    { n: "Provably Fair", l: "https://blaze.bet.br/pt/blog/article/provably-fair" },
+    { n: "Como sacar na Blaze", l: "https://blaze.bet.br/pt/blog/article/como-sacar-na-blaze" },
+    { n: "Autoexclusão", l: "https://blaze.bet.br/pt/blog/article/autoexclusao-nas-plataformas-de-apostas-online" },
+    { n: "Verificação de Identidade (KYC)", l: "https://blaze.bet.br/pt/blog/article/verificacao-de-identidade-nas-plataformas-de-apostas" },
+    { n: "Rollover nas Apostas", l: "https://blaze.bet.br/pt/blog/article/rollover-nas-apostas" },
+    { n: "Over e Under", l: "https://blaze.bet.br/pt/blog/article/over-e-under" },
+    { n: "Handicap Europeu", l: "https://blaze.bet.br/pt/blog/article/handicap-europeu" },
+    { n: "Cashback da Blaze", l: "https://blaze.bet.br/pt/blog/article/cashback-da-blaze" },
+    { n: "Símbolos Scatter", l: "https://blaze.bet.br/pt/blog/article/simbolos-scatter" },
+    { n: "Maneiras de vencer nos Slots", l: "https://blaze.bet.br/pt/blog/article/maneiras-de-vencer-nos-slots" },
+    { n: "Bônus de Cassino Online", l: "https://blaze.bet.br/pt/blog/article/bonus-de-cassino-online" },
+    { n: "Enciclopédia de Apostas", l: "https://blaze.bet.br/pt/blog/article/enciclopedia-de-apostas-esportivas" },
+    { n: "Mercados de Apostas Esportivas", l: "https://blaze.bet.br/pt/blog/article/mercados-de-apostas-esportivas" },
+    { n: "Estratégia James Bond", l: "https://blaze.bet.br/pt/blog/article/estrategia-james-bond" },
+    { n: "Cassino ao Vivo", l: "https://blaze.bet.br/pt/blog/article/cassino-ao-vivo" },
+    { n: "Sistema Suíço", l: "https://blaze.bet.br/pt/blog/article/sistema-suico" },
+    { n: "Tipster nas Apostas", l: "https://blaze.bet.br/pt/blog/article/tipster-nas-apostas-esportivas" }
+  ];
+  let h = links.map(k => `<a href="${k.l}" target="_blank" class="link-item">🔗 ${k.n}</a>`).join('');
+  tela(`<h2>Links Úteis - Blog</h2><div class="link-list">${h}</div><button class="secondary" onclick="menu()">Voltar ao menu</button>`);
+}
+
+/* ===================== CASHBACK ===================== */
+function inicioCashback() {
+  tela(`
+    <h2>Cálculo Individual Cashback</h2>
+    <div style="text-align: left;">
+      <label>Porcentagem (1 a 25%):</label>
+      <input id="porcentagem" type="number" min="1" max="25" value="5">
+      <label>Total apostado (real_bet):</label>
+      <input id="real_bet" type="number" step="0.01" value="0">
+      <label>Total ganho (real_won):</label>
+      <input id="real_won" type="number" step="0.01" value="0">
+      <label>Cashback semana anterior:</label>
+      <input id="last_week_cb" type="number" step="0.01" value="0">
+      <label>Ganhos Giros Grátis:</label>
+      <input id="spins" type="number" step="0.01" value="0">
+      <label>Ganhos Recompensas (sell_amount):</label>
+      <input id="sell" type="number" step="0.01" value="0">
+      <label>Bônus convertidos (transfer_amount):</label>
+      <input id="trans" type="number" step="0.01" value="0">
+      <label>Rakeback total recebido:</label>
+      <input id="rake" type="number" step="0.01" value="0">
+    </div>
+    <button onclick="gerarResumo()">Pronto</button>
+    <button class="secondary" onclick="menu()">Voltar ao menu</button>
+    <div id="resultado"></div>
+  `);
+}
+
+function gerarResumo() {
+  const p = parseFloat(document.getElementById("porcentagem").value || 0),
+        bet = parseFloat(document.getElementById("real_bet").value || 0),
+        won = parseFloat(document.getElementById("real_won").value || 0),
+        lastCb = parseFloat(document.getElementById("last_week_cb").value || 0),
+        spins = parseFloat(document.getElementById("spins").value || 0),
+        sell = parseFloat(document.getElementById("sell").value || 0),
+        trans = parseFloat(document.getElementById("trans").value || 0),
+        rake = parseFloat(document.getElementById("rake").value || 0);
+
+  const ex = lastCb + spins + sell + trans + rake;
+  const gt = won + ex;
+  const per = bet - gt;
+  const fcb = per > 0 ? (per * (p / 100)) : 0;
+
+  const textoFinal = `É importante que saiba que o cashback semanal não é um ganho sobre o total de perdas que teve durante a semana.
+
+Para recebê-lo, durante a semana precisa ter tido mais perdas do que ganhos, e é a partir dessa diferença que é tirada sua porcentagem de cashback.
+
+Vamos rever seus valores:
+Total apostado = BRL ${bet.toFixed(2)}
+Total ganho = BRL ${won.toFixed(2)}
+
+Cashback da semana passada = BRL ${lastCb.toFixed(2)}
+Ganhos com giros grátis = BRL ${spins.toFixed(2)}
+Ganhos de recompensas = BRL ${sell.toFixed(2)}
+Bônus convertidos em reais = BRL ${trans.toFixed(2)}
+Rakeback = BRL ${rake.toFixed(2)}
+
+Ganhos totais considerados = BRL ${won.toFixed(2)} + BRL ${ex.toFixed(2)} = BRL ${gt.toFixed(2)}
+Perdas = BRL ${bet.toFixed(2)} - BRL ${gt.toFixed(2)} = BRL ${per.toFixed(2)}
+Cashback (BRL ${per.toFixed(2)} - ${p}%) = BRL ${fcb.toFixed(2)}
+
+( Mais informações sobre como funciona o calculo do cashback em https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-cashback-reembolso )`;
+
+  document.getElementById("resultado").innerHTML = `<pre id="preOutput">${textoFinal}</pre><button id="btnCopiar" onclick="executarCopia()">Copiar Mensagem</button>`;
+}
+
+function executarCopia() {
+  const texto = document.getElementById("preOutput").innerText;
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(texto).then(() => sucessoCopia()).catch(() => fallbackCopia(texto));
+  } else {
+    fallbackCopia(texto);
+  }
+}
+
+function fallbackCopia(texto) {
+  const ta = document.createElement("textarea");
+  ta.value = texto; ta.style.position = "fixed";
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); sucessoCopia(); } catch (err) {}
+  document.body.removeChild(ta);
+}
+
+function sucessoCopia() {
+  const btn = document.getElementById("btnCopiar");
+  btn.innerText = "✅ Copiado!"; btn.style.background = "#28a745";
+  setTimeout(() => { btn.innerText = "Copiar Mensagem"; btn.style.background = "#e10600"; }, 2000);
+}
+
+menu();
+</script>
+</body>
+</html>
