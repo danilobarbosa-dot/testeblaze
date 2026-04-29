@@ -74,7 +74,7 @@ function tela(c) {
   app.innerHTML = c;
 }
 
-/* 🔥 TRUNCAR (igual Blaze) */
+/* 🔥 TRUNCAMENTO IGUAL BLAZE */
 function truncar2(valor) {
   return Math.floor(valor * 100) / 100;
 }
@@ -137,7 +137,7 @@ function autoPreencher() {
   gerar();
 }
 
-/* CÁLCULO */
+/* CÁLCULO INTELIGENTE */
 function gerar() {
   const p = parseFloat(document.getElementById("porcentagem").value || 0);
   const bet = parseFloat(document.getElementById("real_bet").value || 0);
@@ -154,11 +154,13 @@ function gerar() {
   const total = won + extras;
   const perda = bet - total;
 
+  const calculado = perda > 0 ? truncar2(perda * (p / 100)) : 0;
+
   let cashback = 0;
   let texto = "";
 
-  /* 🔥 CASO 1 - SISTEMA */
-  if (cashbackSistema > 0) {
+  /* 🔥 DECISÃO INTELIGENTE */
+  if (cashbackSistema > 0 && Math.abs(calculado - cashbackSistema) > 0.01) {
 
     cashback = truncar2(cashbackSistema);
 
@@ -171,13 +173,9 @@ Esse é o valor final disponível para você nesta semana.
 Para mais detalhes sobre o cálculo:
 https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-cashback-reembolso`;
 
-  }
+  } else {
 
-  /* 🔥 CASO 2 - MANUAL */
-  else {
-
-    cashback = perda > 0 ? perda * (p / 100) : 0;
-    cashback = truncar2(cashback);
+    cashback = calculado;
 
     texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
 
@@ -211,7 +209,7 @@ https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-ca
    <button id="btnCopiar" onclick="copiar()">Copiar</button>`;
 }
 
-/* 🔥 COPIAR COM FALLBACK */
+/* COPIAR (COM FALLBACK) */
 function copiar() {
   const texto = document.getElementById("txt").innerText;
 
@@ -237,8 +235,8 @@ function fallback(texto) {
   try {
     document.execCommand("copy");
     sucesso();
-  } catch (err) {
-    alert("Não foi possível copiar automaticamente.");
+  } catch {
+    alert("Não foi possível copiar.");
   }
 
   document.body.removeChild(textarea);
