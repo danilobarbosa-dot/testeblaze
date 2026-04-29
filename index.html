@@ -98,6 +98,13 @@ tela(`
 function autoPreencher() {
 const texto = document.getElementById("inputAuto").value;
 
+// 🔥 pegar porcentagem automática
+const matchPercent = texto.trim().match(/^([0-9\.]+)/);
+if (matchPercent) {
+  const valor = parseFloat(matchPercent[1]);
+  document.getElementById("porcentagem").value = (valor * 100).toFixed(0);
+}
+
 function pegar(campo) {
 const r = new RegExp(campo + "\\s*=\\s*([0-9\\.]+)");
 const m = texto.match(r);
@@ -158,14 +165,22 @@ https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-ca
 
 document.getElementById("res").innerHTML =
 `<pre id="txt">${texto}</pre>
-<button onclick="copiar()">Copiar</button>`;
+<button id="btnCopiar" onclick="copiar()">Copiar</button>`;
 }
 
-/* COPIAR */
+/* COPIAR SEM POPUP */
 function copiar() {
 const t = document.getElementById("txt").innerText;
 navigator.clipboard.writeText(t);
-alert("Copiado!");
+
+const btn = document.getElementById("btnCopiar");
+btn.innerText = "✅ Copiado!";
+btn.style.background = "#28a745";
+
+setTimeout(() => {
+  btn.innerText = "Copiar";
+  btn.style.background = "#e10600";
+}, 2000);
 }
 
 /* INICIAR */
