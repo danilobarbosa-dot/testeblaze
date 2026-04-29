@@ -98,7 +98,7 @@ tela(`
 function autoPreencher() {
 const texto = document.getElementById("inputAuto").value;
 
-// 🔥 PERCENTUAL CORRIGIDO (robusto)
+// 🔥 porcentagem automática
 const matchPercent = texto.match(/([0-9]+\.[0-9]+)/);
 if (matchPercent) {
   const valor = parseFloat(matchPercent[1]);
@@ -119,6 +119,11 @@ document.getElementById("last_week_cb").value = pegar("last_week_cashback");
 document.getElementById("spins").value = pegar("softswiss_free_spins_amount");
 document.getElementById("rake").value = pegar("rakeback_reward_amount");
 
+// 🔥 pegar cashback oficial do sistema
+const cashbackSistema = pegar("cashback_reward_amount");
+
+document.getElementById("res").dataset.cashbackSistema = cashbackSistema;
+
 gerar();
 }
 
@@ -133,10 +138,21 @@ const sell = parseFloat(document.getElementById("sell").value || 0);
 const trans = parseFloat(document.getElementById("trans").value || 0);
 const rake = parseFloat(document.getElementById("rake").value || 0);
 
+// 🔥 pega cashback do sistema
+const cashbackSistema = parseFloat(document.getElementById("res").dataset.cashbackSistema || 0);
+
 const extras = last + spins + sell + trans + rake;
 const total = won + extras;
 const perda = bet - total;
-const cashback = perda > 0 ? perda * (p / 100) : 0;
+
+// 🔥 regra correta
+let cashback = 0;
+
+if (cashbackSistema > 0) {
+  cashback = cashbackSistema;
+} else {
+  cashback = perda > 0 ? perda * (p / 100) : 0;
+}
 
 const texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
 
