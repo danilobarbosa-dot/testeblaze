@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Blaze – Suporte Unificado</title>
+<title>Blaze – Cálculo de Cashback</title>
 <style>
 body {
 font-family: Arial, sans-serif;
@@ -66,23 +66,15 @@ const app = document.getElementById("app");
 
 function tela(c) { app.innerHTML = c; }
 
-/* MENU */
-function menu() {
-tela(`
-<h2>Fluxos de Atendimento</h2>
-<button onclick="cashback()">🧮 Cálculo Cashback</button>
-`);
-}
-
-/* CASHBACK */
+/* TELA DIRETA */
 function cashback() {
 tela(`
-<h2>Cálculo Cashback</h2>
+<h2>Cálculo de Cashback</h2>
 
 <textarea id="inputAuto" placeholder="Cole aqui os dados do sistema"></textarea>
 <button onclick="autoPreencher()">⚡ Preencher automático</button>
 
-<input id="porcentagem" type="number" value="5" placeholder="Porcentagem">
+<input id="porcentagem" type="number" value="5" placeholder="Porcentagem (%)">
 <input id="real_bet" type="number" placeholder="Total apostado">
 <input id="real_won" type="number" placeholder="Total ganho">
 <input id="last_week_cb" type="number" placeholder="Cashback anterior">
@@ -92,7 +84,6 @@ tela(`
 <input id="rake" type="number" placeholder="Rakeback">
 
 <button onclick="gerar()">Gerar cálculo</button>
-<button class="secondary" onclick="menu()">Voltar</button>
 
 <div id="res"></div>
 `);
@@ -116,7 +107,7 @@ document.getElementById("last_week_cb").value = pegar("last_week_cashback");
 document.getElementById("spins").value = pegar("softswiss_free_spins_amount");
 document.getElementById("rake").value = pegar("rakeback_reward_amount");
 
-gerar(); // já calcula automático
+gerar();
 }
 
 /* CÁLCULO */
@@ -160,7 +151,8 @@ navigator.clipboard.writeText(t);
 alert("Copiado!");
 }
 
-menu();
+/* INICIAR DIRETO */
+cashback();
 </script>
 
 </body>
