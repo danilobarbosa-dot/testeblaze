@@ -44,8 +44,6 @@ font-weight: bold;
 cursor: pointer;
 }
 button:hover { background: #b00500; }
-.secondary { background: #555; }
-.secondary:hover { background: #333; }
 pre {
 background: #f7f7f7;
 padding: 15px;
@@ -66,7 +64,14 @@ const app = document.getElementById("app");
 
 function tela(c) { app.innerHTML = c; }
 
-/* TELA DIRETA */
+/* MENU (sem título) */
+function menu() {
+tela(`
+<button onclick="cashback()">🧮 Cálculo Cashback</button>
+`);
+}
+
+/* TELA CASHBACK */
 function cashback() {
 tela(`
 <h2>Cálculo de Cashback</h2>
@@ -126,18 +131,30 @@ const total = won + extras;
 const perda = bet - total;
 const cashback = perda > 0 ? perda * (p / 100) : 0;
 
-const texto = `O cashback semanal é baseado na diferença entre ganhos e perdas.
+const texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
 
-Total apostado: BRL ${bet.toFixed(2)}
-Total ganho: BRL ${won.toFixed(2)}
+Vamos aos seus valores:
 
-Ganhos adicionais: BRL ${extras.toFixed(2)}
+• Total apostado: BRL ${bet.toFixed(2)}  
+• Total ganho: BRL ${won.toFixed(2)}  
 
-Perdas: BRL ${perda.toFixed(2)}
+Outros valores considerados:  
+• Cashback anterior: BRL ${last.toFixed(2)}  
+• Giros grátis: BRL ${spins.toFixed(2)}  
+• Recompensas: BRL ${sell.toFixed(2)}  
+• Bônus convertidos: BRL ${trans.toFixed(2)}  
+• Rakeback: BRL ${rake.toFixed(2)}  
 
-Cashback (${p}%): BRL ${cashback.toFixed(2)}
+Total de ganhos considerados: BRL ${total.toFixed(2)}  
 
-Esse é o valor final disponível nesta semana.`;
+Diferença (perdas): BRL ${perda.toFixed(2)}  
+
+Seu cashback (${p}%): BRL ${cashback.toFixed(2)}  
+
+Esse é o valor final disponível para você nesta semana.
+
+Para mais detalhes sobre o cálculo:
+https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-cashback-reembolso`;
 
 document.getElementById("res").innerHTML =
 `<pre id="txt">${texto}</pre>
@@ -151,8 +168,8 @@ navigator.clipboard.writeText(t);
 alert("Copiado!");
 }
 
-/* INICIAR DIRETO */
-cashback();
+/* INICIAR */
+menu();
 </script>
 
 </body>
