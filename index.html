@@ -64,14 +64,14 @@ const app = document.getElementById("app");
 
 function tela(c) { app.innerHTML = c; }
 
-/* MENU (sem título) */
+/* MENU */
 function menu() {
 tela(`
 <button onclick="cashback()">🧮 Cálculo Cashback</button>
 `);
 }
 
-/* TELA CASHBACK */
+/* TELA */
 function cashback() {
 tela(`
 <h2>Cálculo de Cashback</h2>
@@ -98,11 +98,11 @@ tela(`
 function autoPreencher() {
 const texto = document.getElementById("inputAuto").value;
 
-// 🔥 pegar porcentagem automática
-const matchPercent = texto.trim().match(/^([0-9\.]+)/);
+// 🔥 PERCENTUAL CORRIGIDO (robusto)
+const matchPercent = texto.match(/([0-9]+\.[0-9]+)/);
 if (matchPercent) {
   const valor = parseFloat(matchPercent[1]);
-  document.getElementById("porcentagem").value = (valor * 100).toFixed(0);
+  document.getElementById("porcentagem").value = Math.round(valor * 100);
 }
 
 function pegar(campo) {
@@ -168,7 +168,7 @@ document.getElementById("res").innerHTML =
 <button id="btnCopiar" onclick="copiar()">Copiar</button>`;
 }
 
-/* COPIAR SEM POPUP */
+/* COPIAR */
 function copiar() {
 const t = document.getElementById("txt").innerText;
 navigator.clipboard.writeText(t);
