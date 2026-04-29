@@ -119,15 +119,14 @@ document.getElementById("last_week_cb").value = pegar("last_week_cashback");
 document.getElementById("spins").value = pegar("softswiss_free_spins_amount");
 document.getElementById("rake").value = pegar("rakeback_reward_amount");
 
-// 🔥 pegar cashback oficial do sistema
+// 🔥 pega cashback do sistema
 const cashbackSistema = pegar("cashback_reward_amount");
-
 document.getElementById("res").dataset.cashbackSistema = cashbackSistema;
 
 gerar();
 }
 
-/* CÁLCULO */
+/* CÁLCULO FINAL INTELIGENTE */
 function gerar() {
 const p = parseFloat(document.getElementById("porcentagem").value || 0);
 const bet = parseFloat(document.getElementById("real_bet").value || 0);
@@ -138,23 +137,37 @@ const sell = parseFloat(document.getElementById("sell").value || 0);
 const trans = parseFloat(document.getElementById("trans").value || 0);
 const rake = parseFloat(document.getElementById("rake").value || 0);
 
-// 🔥 pega cashback do sistema
 const cashbackSistema = parseFloat(document.getElementById("res").dataset.cashbackSistema || 0);
 
 const extras = last + spins + sell + trans + rake;
 const total = won + extras;
 const perda = bet - total;
 
-// 🔥 regra correta
 let cashback = 0;
+let texto = "";
 
+/* 🔥 CASO 1 — VALOR DO SISTEMA */
 if (cashbackSistema > 0) {
-  cashback = cashbackSistema;
-} else {
-  cashback = perda > 0 ? perda * (p / 100) : 0;
+
+cashback = cashbackSistema;
+
+texto = `O valor do seu cashback já foi calculado automaticamente pelo sistema com base nas suas atividades durante o período.
+
+Seu cashback (${p}%): BRL ${cashback.toFixed(2)}
+
+Esse é o valor final disponível para você nesta semana.
+
+Para mais detalhes sobre o cálculo:
+https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-cashback-reembolso`;
+
 }
 
-const texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
+/* 🔥 CASO 2 — CÁLCULO MANUAL */
+else {
+
+cashback = perda > 0 ? perda * (p / 100) : 0;
+
+texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
 
 Vamos aos seus valores:
 
@@ -178,6 +191,8 @@ Esse é o valor final disponível para você nesta semana.
 
 Para mais detalhes sobre o cálculo:
 https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-cashback-reembolso`;
+
+}
 
 document.getElementById("res").innerHTML =
 `<pre id="txt">${texto}</pre>
