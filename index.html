@@ -74,7 +74,7 @@ function tela(c) {
   app.innerHTML = c;
 }
 
-/* 🔥 TRUNCAMENTO IGUAL BLAZE */
+/* 🔥 TRUNCAMENTO */
 function truncar2(valor) {
   return Math.floor(valor * 100) / 100;
 }
@@ -137,7 +137,7 @@ function autoPreencher() {
   gerar();
 }
 
-/* CÁLCULO FINAL CORRETO */
+/* CÁLCULO FINAL */
 function gerar() {
   const p = parseFloat(document.getElementById("porcentagem").value || 0);
   const bet = parseFloat(document.getElementById("real_bet").value || 0);
@@ -152,33 +152,19 @@ function gerar() {
   const cashbackSistema = truncar2(cashbackSistemaRaw);
 
   const extras = last + spins + sell + trans + rake;
-  const total = won + extras;
-  const perda = bet - total;
-
-  const calculado = perda > 0 ? truncar2(perda * (p / 100)) : 0;
+  const total = truncar2(won + extras);
+  const perda = truncar2(bet - total);
 
   let cashback = 0;
-  let texto = "";
 
-  /* 🔥 COMPARAÇÃO CORRETA (SEM ERRO DE CENTAVOS) */
-  if (cashbackSistema > 0 && calculado !== cashbackSistema) {
+/* 🔥 SEMPRE USA SISTEMA SE EXISTIR */
+if (cashbackSistema > 0) {
+  cashback = cashbackSistema;
+} else {
+  cashback = perda > 0 ? truncar2(perda * (p / 100)) : 0;
+}
 
-    cashback = cashbackSistema;
-
-    texto = `O valor do seu cashback já foi calculado automaticamente pelo sistema com base nas suas atividades durante o período.
-
-Seu cashback (${p}%): BRL ${cashback.toFixed(2)}
-
-Esse é o valor final disponível para você nesta semana.
-
-Para mais detalhes sobre o cálculo:
-https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-cashback-reembolso`;
-
-  } else {
-
-    cashback = calculado;
-
-    texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
+const texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
 
 Vamos aos seus valores:
 
@@ -192,9 +178,9 @@ Outros valores considerados:
 • Bônus convertidos: BRL ${truncar2(trans).toFixed(2)}  
 • Rakeback: BRL ${truncar2(rake).toFixed(2)}  
 
-Total de ganhos considerados: BRL ${truncar2(total).toFixed(2)}  
+Total de ganhos considerados: BRL ${total.toFixed(2)}  
 
-Diferença (perdas): BRL ${truncar2(perda).toFixed(2)}  
+Diferença (perdas): BRL ${perda.toFixed(2)}  
 
 Seu cashback (${p}%): BRL ${cashback.toFixed(2)}  
 
@@ -203,14 +189,12 @@ Esse é o valor final disponível para você nesta semana.
 Para mais detalhes sobre o cálculo:
 https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-cashback-reembolso`;
 
-  }
-
-  document.getElementById("res").innerHTML =
-  `<pre id="txt">${texto}</pre>
-   <button id="btnCopiar" onclick="copiar()">Copiar</button>`;
+document.getElementById("res").innerHTML =
+`<pre id="txt">${texto}</pre>
+<button id="btnCopiar" onclick="copiar()">Copiar</button>`;
 }
 
-/* COPIAR (100% FUNCIONAL) */
+/* COPIAR */
 function copiar() {
   const texto = document.getElementById("txt").innerText;
 
