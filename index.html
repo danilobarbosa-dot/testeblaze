@@ -74,7 +74,7 @@ function tela(c) {
   app.innerHTML = c;
 }
 
-/* 🔥 TRUNCAMENTO */
+/* 🔥 TRUNCAMENTO PADRÃO VISUAL */
 function truncar2(valor) {
   return Math.floor(valor * 100) / 100;
 }
@@ -131,13 +131,14 @@ function autoPreencher() {
   document.getElementById("spins").value = pegar("softswiss_free_spins_amount");
   document.getElementById("rake").value = pegar("rakeback_reward_amount");
 
-  const cashbackSistema = pegar("cashback_reward_amount");
+  /* 🔥 AGORA USA amount (CORRETO) */
+  const cashbackSistema = pegar("amount");
   document.getElementById("res").dataset.cashbackSistema = cashbackSistema;
 
   gerar();
 }
 
-/* CÁLCULO FINAL */
+/* CÁLCULO */
 function gerar() {
   const p = parseFloat(document.getElementById("porcentagem").value || 0);
   const bet = parseFloat(document.getElementById("real_bet").value || 0);
@@ -157,14 +158,14 @@ function gerar() {
 
   let cashback = 0;
 
-/* 🔥 SEMPRE USA SISTEMA SE EXISTIR */
-if (cashbackSistema > 0) {
-  cashback = cashbackSistema;
-} else {
-  cashback = perda > 0 ? truncar2(perda * (p / 100)) : 0;
-}
+  /* 🔥 PRIORIDADE TOTAL PRO AMOUNT */
+  if (cashbackSistema > 0) {
+    cashback = cashbackSistema;
+  } else {
+    cashback = perda > 0 ? truncar2(perda * (p / 100)) : 0;
+  }
 
-const texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
+  const texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
 
 Vamos aos seus valores:
 
@@ -189,9 +190,9 @@ Esse é o valor final disponível para você nesta semana.
 Para mais detalhes sobre o cálculo:
 https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-cashback-reembolso`;
 
-document.getElementById("res").innerHTML =
-`<pre id="txt">${texto}</pre>
-<button id="btnCopiar" onclick="copiar()">Copiar</button>`;
+  document.getElementById("res").innerHTML =
+  `<pre id="txt">${texto}</pre>
+   <button id="btnCopiar" onclick="copiar()">Copiar</button>`;
 }
 
 /* COPIAR */
@@ -220,9 +221,7 @@ function fallback(texto) {
   try {
     document.execCommand("copy");
     sucesso();
-  } catch {
-    alert("Não foi possível copiar.");
-  }
+  } catch {}
 
   document.body.removeChild(textarea);
 }
