@@ -27,7 +27,9 @@ overflow-y: auto;
 max-height: 95vh;
 }
 
-h2 { color: #e10600; }
+h2 {
+color: #e10600;
+}
 
 input, textarea {
 width: 100%;
@@ -35,6 +37,7 @@ padding: 10px;
 margin-bottom: 10px;
 border-radius: 6px;
 border: 1px solid #ccc;
+box-sizing: border-box;
 }
 
 button {
@@ -49,7 +52,9 @@ font-weight: bold;
 cursor: pointer;
 }
 
-button:hover { background: #b00500; }
+button:hover {
+background: #b00500;
+}
 
 pre {
 background: #f7f7f7;
@@ -74,14 +79,16 @@ function tela(c) {
   app.innerHTML = c;
 }
 
-/* 🔥 TRUNCAMENTO PADRÃO VISUAL */
+/* TRUNCAR 2 CASAS */
 function truncar2(valor) {
   return Math.floor(valor * 100) / 100;
 }
 
 /* MENU */
 function menu() {
-  tela(`<button onclick="cashback()">🧮 Cálculo Cashback</button>`);
+  tela(`
+    <button onclick="cashback()">🧮 Cálculo Cashback</button>
+  `);
 }
 
 /* TELA */
@@ -90,15 +97,23 @@ function cashback() {
   <h2>Cálculo de Cashback</h2>
 
   <textarea id="inputAuto" placeholder="Cole aqui os dados do sistema"></textarea>
+
   <button onclick="autoPreencher()">⚡ Preencher automático</button>
 
   <input id="porcentagem" type="number" value="5">
+
   <input id="real_bet" type="number" placeholder="Total apostado">
+
   <input id="real_won" type="number" placeholder="Total ganho">
+
   <input id="last_week_cb" type="number" placeholder="Cashback anterior">
+
   <input id="spins" type="number" placeholder="Giros grátis">
+
   <input id="sell" type="number" placeholder="Recompensas">
+
   <input id="trans" type="number" placeholder="Bônus convertidos">
+
   <input id="rake" type="number" placeholder="Rakeback">
 
   <button onclick="gerar()">Gerar cálculo</button>
@@ -107,133 +122,210 @@ function cashback() {
   `);
 }
 
+/* PEGAR VALORES */
+function pegarCampo(texto, campo) {
+  const r = new RegExp(campo + "\\s*=\\s*(-?[0-9\\.]+)");
+  const m = texto.match(r);
+
+  return m ? parseFloat(m[1]) : 0;
+}
+
 /* AUTO PREENCHER */
 function autoPreencher() {
+
   const texto = document.getElementById("inputAuto").value;
 
   const matchPercent = texto.match(/([0-9]+\.[0-9]+)/);
+
   if (matchPercent) {
     const valor = parseFloat(matchPercent[1]);
     document.getElementById("porcentagem").value = Math.round(valor * 100);
   }
 
-  function pegar(campo) {
-    const r = new RegExp(campo + "\\s*=\\s*([0-9\\.]+)");
-    const m = texto.match(r);
-    return m ? parseFloat(m[1]) : 0;
-  }
+  document.getElementById("real_bet").value =
+    pegarCampo(texto, "real_bet");
 
-  document.getElementById("real_bet").value = pegar("real_bet");
-  document.getElementById("real_won").value = pegar("real_won");
-  document.getElementById("sell").value = pegar("sell_amount");
-  document.getElementById("trans").value = pegar("transfer_amount");
-  document.getElementById("last_week_cb").value = pegar("last_week_cashback");
-  document.getElementById("spins").value = pegar("softswiss_free_spins_amount");
-  document.getElementById("rake").value = pegar("rakeback_reward_amount");
+  document.getElementById("real_won").value =
+    pegarCampo(texto, "real_won");
 
-  /* 🔥 AGORA USA amount (CORRETO) */
-  const cashbackSistema = pegar("amount");
-  document.getElementById("res").dataset.cashbackSistema = cashbackSistema;
+  document.getElementById("sell").value =
+    pegarCampo(texto, "sell_amount");
+
+  document.getElementById("trans").value =
+    pegarCampo(texto, "transfer_amount");
+
+  document.getElementById("last_week_cb").value =
+    pegarCampo(texto, "last_week_cashback");
+
+  document.getElementById("spins").value =
+    pegarCampo(texto, "softswiss_free_spins_amount");
+
+  document.getElementById("rake").value =
+    pegarCampo(texto, "rakeback_reward_amount");
+
+  /* PEGA O AMOUNT CORRETAMENTE */
+  const cashbackSistema =
+    pegarCampo(texto, "amount");
+
+  document.getElementById("res").dataset.cashbackSistema =
+    cashbackSistema;
 
   gerar();
 }
 
-/* CÁLCULO */
+/* GERAR */
 function gerar() {
-  const p = parseFloat(document.getElementById("porcentagem").value || 0);
-  const bet = parseFloat(document.getElementById("real_bet").value || 0);
-  const won = parseFloat(document.getElementById("real_won").value || 0);
-  const last = parseFloat(document.getElementById("last_week_cb").value || 0);
-  const spins = parseFloat(document.getElementById("spins").value || 0);
-  const sell = parseFloat(document.getElementById("sell").value || 0);
-  const trans = parseFloat(document.getElementById("trans").value || 0);
-  const rake = parseFloat(document.getElementById("rake").value || 0);
 
-  const cashbackSistemaRaw = parseFloat(document.getElementById("res").dataset.cashbackSistema || 0);
-  const cashbackSistema = truncar2(cashbackSistemaRaw);
+  const p =
+    parseFloat(document.getElementById("porcentagem").value || 0);
 
-  const extras = last + spins + sell + trans + rake;
-  const total = truncar2(won + extras);
-  const perda = truncar2(bet - total);
+  const bet =
+    parseFloat(document.getElementById("real_bet").value || 0);
+
+  const won =
+    parseFloat(document.getElementById("real_won").value || 0);
+
+  const last =
+    parseFloat(document.getElementById("last_week_cb").value || 0);
+
+  const spins =
+    parseFloat(document.getElementById("spins").value || 0);
+
+  const sell =
+    parseFloat(document.getElementById("sell").value || 0);
+
+  const trans =
+    parseFloat(document.getElementById("trans").value || 0);
+
+  const rake =
+    parseFloat(document.getElementById("rake").value || 0);
+
+  const cashbackSistemaRaw =
+    parseFloat(
+      document.getElementById("res").dataset.cashbackSistema || 0
+    );
+
+  const cashbackSistema =
+    truncar2(cashbackSistemaRaw);
+
+  const extras =
+    last + spins + sell + trans + rake;
+
+  const total =
+    truncar2(won + extras);
+
+  const perda =
+    truncar2(bet - total);
 
   let cashback = 0;
 
-  /* 🔥 PRIORIDADE TOTAL PRO AMOUNT */
-  if (cashbackSistema > 0) {
-    cashback = cashbackSistema;
+  /* PRIORIDADE TOTAL AO AMOUNT */
+  if (cashbackSistema !== 0) {
+
+    cashback =
+      cashbackSistema > 0
+      ? cashbackSistema
+      : 0;
+
   } else {
-    cashback = perda > 0 ? truncar2(perda * (p / 100)) : 0;
+
+    cashback =
+      perda > 0
+      ? truncar2(perda * (p / 100))
+      : 0;
   }
 
   const texto = `O cashback semanal é calculado com base na diferença entre seus ganhos e perdas durante o período, e não sobre o total apostado.
 
 Vamos aos seus valores:
 
-• Total apostado: BRL ${truncar2(bet).toFixed(2)}  
-• Total ganho: BRL ${truncar2(won).toFixed(2)}  
+• Total apostado: BRL ${truncar2(bet).toFixed(2)}
+• Total ganho: BRL ${truncar2(won).toFixed(2)}
 
-Outros valores considerados:  
-• Cashback anterior: BRL ${truncar2(last).toFixed(2)}  
-• Giros grátis: BRL ${truncar2(spins).toFixed(2)}  
-• Recompensas: BRL ${truncar2(sell).toFixed(2)}  
-• Bônus convertidos: BRL ${truncar2(trans).toFixed(2)}  
-• Rakeback: BRL ${truncar2(rake).toFixed(2)}  
+Outros valores considerados:
+• Cashback anterior: BRL ${truncar2(last).toFixed(2)}
+• Giros grátis: BRL ${truncar2(spins).toFixed(2)}
+• Recompensas: BRL ${truncar2(sell).toFixed(2)}
+• Bônus convertidos: BRL ${truncar2(trans).toFixed(2)}
+• Rakeback: BRL ${truncar2(rake).toFixed(2)}
 
-Total de ganhos considerados: BRL ${total.toFixed(2)}  
+Total de ganhos considerados: BRL ${total.toFixed(2)}
 
-Diferença (perdas): BRL ${perda.toFixed(2)}  
+Diferença (perdas): BRL ${perda.toFixed(2)}
 
-Seu cashback (${p}%): BRL ${cashback.toFixed(2)}  
+Seu cashback (${p}%): BRL ${cashback.toFixed(2)}
 
 Esse é o valor final disponível para você nesta semana.
 
 Para mais detalhes sobre o cálculo:
 https://support.blaze-help.com/hc/pt-br/articles/360007716017-Como-funciona-o-cashback-reembolso`;
 
-  document.getElementById("res").innerHTML =
-  `<pre id="txt">${texto}</pre>
-   <button id="btnCopiar" onclick="copiar()">Copiar</button>`;
+  document.getElementById("res").innerHTML = `
+    <pre id="txt">${texto}</pre>
+
+    <button id="btnCopiar" onclick="copiar()">
+      Copiar
+    </button>
+  `;
 }
 
 /* COPIAR */
 function copiar() {
-  const texto = document.getElementById("txt").innerText;
+
+  const texto =
+    document.getElementById("txt").innerText;
 
   if (navigator.clipboard && window.isSecureContext) {
+
     navigator.clipboard.writeText(texto)
       .then(() => sucesso())
       .catch(() => fallback(texto));
+
   } else {
+
     fallback(texto);
   }
 }
 
 function fallback(texto) {
-  const textarea = document.createElement("textarea");
+
+  const textarea =
+    document.createElement("textarea");
+
   textarea.value = texto;
+
   textarea.style.position = "fixed";
   textarea.style.opacity = "0";
 
   document.body.appendChild(textarea);
+
   textarea.focus();
   textarea.select();
 
   try {
+
     document.execCommand("copy");
+
     sucesso();
+
   } catch {}
 
   document.body.removeChild(textarea);
 }
 
 function sucesso() {
-  const btn = document.getElementById("btnCopiar");
+
+  const btn =
+    document.getElementById("btnCopiar");
+
   btn.innerText = "✅ Copiado!";
   btn.style.background = "#28a745";
 
   setTimeout(() => {
+
     btn.innerText = "Copiar";
     btn.style.background = "#e10600";
+
   }, 2000);
 }
 
